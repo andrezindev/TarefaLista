@@ -1,0 +1,132 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>To-Do List</title>
+  <script src="https://cdn.jsdelivr.net/npm/vue@2"></script>
+  <style>
+    /* Estilos para o corpo da página */
+    body {
+      font-family: Arial, sans-serif; /* Define a fonte do texto */
+      background-color: #0a0a0a; /* Define a cor de fundo (azul) */
+      color: #fff; /* Define a cor do texto (branco) */
+      margin: 0; /* Remove margens padrão */
+      padding: 0; /* Remove preenchimento padrão */
+    }
+
+    /* Estilos para o contêiner principal */
+    #app {
+      max-width: 600px; /* Define a largura máxima do contêiner */
+      margin: 20px auto; /* Centraliza o contêiner na página */
+      background-color: #000000; /* Define a cor de fundo do contêiner (branco) */
+      padding: 20px; /* Adiciona um espaçamento interno */
+      border-radius: 5px; /* Define as bordas arredondadas */
+      box-shadow: 0 0 10px rgba(0, 0, 0, 0.1); /* Adiciona uma sombra */
+    }
+
+    /* Estilos para o título */
+    h1 {
+      text-align: center; /* Centraliza o texto */
+    }
+
+    /* Estilos para o campo de entrada de texto */
+    input[type="text"] {
+      width: calc(100% - 80px); /* Define a largura do campo de entrada (subtraindo o espaço do botão) */
+      padding: 10px; /* Adiciona um espaçamento interno */
+      border-radius: 5px 0 0 5px; /* Define as bordas arredondadas */
+      border: none; /* Remove a borda */
+    }
+
+    /* Estilos para o botão */
+    button {
+      padding: 10px 20px; /* Adiciona um espaçamento interno */
+      border: none; /* Remove a borda */
+      background-color: #3498db; /* Define a cor de fundo do botão (azul) */
+      color: #fff; /* Define a cor do texto (branco) */
+      border-radius: 0 5px 5px 0; /* Define as bordas arredondadas */
+      cursor: pointer; /* Altera o cursor ao passar */
+    }
+
+    /* Efeito de hover para o botão */
+    button:hover {
+      background-color: #2980b9; /* Define a cor de fundo do botão ao passar o mouse (azul mais escuro) */
+    }
+
+    /* Estilos para a lista não ordenada */
+    ul {
+      list-style-type: none; /* Remove os marcadores de lista */
+      padding: 0; /* Remove o preenchimento */
+    }
+
+    /* Estilos para o item da lista */
+    li {
+      margin-bottom: 10px; /* Adiciona um espaçamento inferior */
+      display: flex; /* Define o layout como linha */
+      align-items: center; /* Alinha os itens verticalmente */
+    }
+
+    /* Estilos para o nome da tarefa */
+    li span {
+      flex-grow: 1; /* Faz o nome da tarefa ocupar todo o espaço restante */
+    }
+
+    /* Estilos para tarefas concluídas */
+    .completed {
+      text-decoration: line-through; /* Adiciona um efeito de texto tachado */
+    }
+  </style>
+</head>
+<body>
+  <!-- Contêiner principal da aplicação Vue.js -->
+  <div id="app">
+    <!-- Título da aplicação -->
+    <h1>LISTA DE TAREFA</h1>
+    <!-- Campo de entrada de texto para adicionar novas tarefas -->
+    <input type="text" v-model="newTask" placeholder="Adicionar nova tarefa">
+    <!-- Botão para adicionar tarefa -->
+    <button @click="addTask">Adicionar</button>
+    
+    <!-- Lista de tarefas -->
+    <ul>
+      <!-- Loop pelas tarefas -->
+      <li v-for="(task, index) in tasks" :key="index">
+        <!-- Nome da tarefa com classe condicional para tarefas concluídas -->
+        <span :class="{ completed: task.completed }">{{ task.name }}</span>
+        <!-- Botão para concluir ou desfazer uma tarefa -->
+        <button @click="toggleTask(index)">{{ task.completed ? 'Desfazer' : 'Concluir' }}</button>
+        <!-- Botão para remover uma tarefa -->
+        <button @click="removeTask(index)">Remover</button>
+      </li>
+    </ul>
+  </div>
+
+  <script>
+    // Inicialização da aplicação Vue.js
+    new Vue({
+      el: '#app',
+      data: {
+        newTask: '', // Armazena o texto do campo de entrada de texto
+        tasks: [] // Armazena as tarefas como objetos { name: '', completed: false }
+      },
+      methods: {
+        // Adiciona uma nova tarefa à lista
+        addTask() {
+          if (this.newTask.trim() !== '') {
+            this.tasks.push({ name: this.newTask, completed: false });
+            this.newTask = ''; // Limpa o campo de entrada de texto
+          }
+        },
+        // Alterna o status de uma tarefa entre concluída e não concluída
+        toggleTask(index) {
+          this.tasks[index].completed = !this.tasks[index].completed;
+        },
+        // Remove uma tarefa da lista
+        removeTask(index) {
+          this.tasks.splice(index, 1);
+        }
+      }
+    });
+  </script>
+</body>
+</html>
